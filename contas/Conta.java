@@ -1,27 +1,26 @@
 package br.com.residencia.poo.contas;
 
-package contas;
-
 import java.util.Scanner;
 import contas.ContaCorrente;
 
-public abstract class Conta{
-	 String tipoConta;
-	 String CPF;
-	 String nome;
-	 int numConta;
-	 String agConta;
-	 double saldo;
-	 double valor;
-	 double tarifacao;
-	 String localConta;
-	 private static int totalContas;
-	 
-	 public Conta() {}
-	
-	 protected Conta(String tipoConta, String cPF, String nome, int numConta, String agConta, double saldo,
+public abstract class Conta {
+	String tipoConta;
+	String CPF;
+	String nome;
+	int numConta;
+	String agConta;
+	double saldo;
+	double valor;
+	double tarifacao;
+	String localConta;
+	private static int totalContas;
+
+	public Conta() {
+	}
+
+	protected Conta(String tipoConta, String cPF, String nome, int numConta, String agConta, double saldo,
 			double tarifacao, String localConta) {
-		 
+
 		this.tipoConta = tipoConta;
 		this.CPF = cPF;
 		this.nome = nome;
@@ -31,8 +30,8 @@ public abstract class Conta{
 		this.tarifacao = tarifacao;
 		this.localConta = localConta;
 	}
-	 
-	 public static void movimento(){
+
+	public static void movimento(){
 	 	Scanner scan = new Scanner(System.in);
 	 	System.out.println("Escolha a operação desejada:\n1- Saque\n2- Depósito\n3- Transferência\n4- Seguro de Vida\n5- Voltar ");
 		int op = scan.nextInt();
@@ -42,7 +41,7 @@ public abstract class Conta{
 			try{
 				System.out.println("Digite o valor que você deseja sacar: R$");
 				double valorSacar = new Scanner(System.in).nextDouble();
-				if(Conta.){
+				if(sacar(valorSacar)){
 						
 				}
 						
@@ -52,98 +51,98 @@ public abstract class Conta{
 			}
 		case 2:
  	}
-			
-			public boolean sacar(Double valor) {
-				if (this.saldo < valor || valor <= 0) {
-					System.out.println("Saldo insuficiente!");
-					return false;
-				}else {
-					this.saldo -= valor;
-					return true;
-				}
-		 }
-	 
+
+	public boolean sacar(Double valor) {
+		if (this.saldo < valor || valor <= 0) {
+			System.out.println("Saldo insuficiente!");
+			return false;
+		} else {
+			this.saldo -= valor;
+			return true;
+		}
+	}
+
 	public boolean depositar(Double valorDeposito) {
-		  Scanner scanner = new Scanner(System.in);
-		  while (valorDeposito <= 0) {
-		    System.out.println("Digite um valor positivo:");
-		    valorDeposito = scanner.nextDouble();
-		  }
-		  this.saldo += valorDeposito;
-		  return true;
+		Scanner scanner = new Scanner(System.in);
+		while (valorDeposito <= 0) {
+			System.out.println("Digite um valor positivo:");
+			valorDeposito = scanner.nextDouble();
 		}
-		
-		public void transferir(Double valor, Conta destino) {
-			sacar(valor);
-			destino.depositar(valor);
-		}
+		this.saldo += valorDeposito;
+		return true;
+	}
 
-		public String getTipoConta() {
-			return tipoConta;
-		}
+	public void transferir(Double valor, Conta destino) {
+		sacar(valor);
+		destino.depositar(valor);
+	}
 
-		public void setTipoConta(String tipoConta) {
-			this.tipoConta = tipoConta;
-		}
+	public String getTipoConta() {
+		return tipoConta;
+	}
 
-		public String getCPF() {
-			return CPF;
-		}
+	public void setTipoConta(String tipoConta) {
+		this.tipoConta = tipoConta;
+	}
 
-		public void setCPF(String cPF) {
-			CPF = cPF;
-		}
+	public String getCPF() {
+		return CPF;
+	}
 
-		public String getNome() {
-			return nome;
-		}
+	public void setCPF(String cPF) {
+		CPF = cPF;
+	}
 
-		public void setNome(String nome) {
-			this.nome = nome;
-		}
+	public String getNome() {
+		return nome;
+	}
 
-		public int getNumConta() {
-			return numConta;
-		}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-		public void setNumConta(int numConta) {
-			this.numConta = numConta;
-		}
+	public int getNumConta() {
+		return numConta;
+	}
 
-		public String getAgConta() {
-			return agConta;
-		}
+	public void setNumConta(int numConta) {
+		this.numConta = numConta;
+	}
 
-		public void setAgConta(String agConta) {
-			this.agConta = agConta;
-		}
+	public String getAgConta() {
+		return agConta;
+	}
 
-		public double getSaldo() {
-			return saldo;
-		}
+	public void setAgConta(String agConta) {
+		this.agConta = agConta;
+	}
 
-		public void setSaldo(double saldo) {
-			this.saldo = saldo;
-		}
+	public double getSaldo() {
+		return saldo;
+	}
 
-		public double getTarifacao() {
-			return tarifacao;
-		}
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
 
-		public void setTarifacao(double tarifacao) {
-			this.tarifacao = tarifacao;
-		}
+	public double getTarifacao() {
+		return tarifacao;
+	}
 
-		public String getLocalConta() {
-			return localConta;
-		}
+	public void setTarifacao(double tarifacao) {
+		this.tarifacao = tarifacao;
+	}
 
-		public void setLocalConta(String localConta) {
-			this.localConta = localConta;
-		}
-		
+	public String getLocalConta() {
+		return localConta;
+	}
+
+	public void setLocalConta(String localConta) {
+		this.localConta = localConta;
+	}
+
 //		public void debitoAutomatico() {
 //			saldo -= luz + cartao;
 //		}
-		
+
 }
