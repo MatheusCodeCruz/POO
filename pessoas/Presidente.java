@@ -1,10 +1,20 @@
 package br.com.residencia.poo.pessoas;
 
-public class Presidente extends Funcionarios{
+public class Presidente extends Funcionario{
 
-	protected Presidente(String nome, String cPF, String senha, String tipoPessoa, String tipoConta) {
+	String cargo = "Presidente";
+
+	public Presidente(String nome, String cPF, String senha, String tipoPessoa, String tipoConta) {
 		super(nome, cPF, senha, tipoPessoa, tipoConta);
-		
+
+	}
+
+	@Override
+	public String toString() {
+		return "Presidente [" + (cargo != null ? "cargo=" + cargo + ", " : "")
+				+ (tipoPessoa != null ? "tipoPessoa=" + tipoPessoa + ", " : "") + "CPF=" + CPF + ", senha=" + senha
+				+ ", " + (nome != null ? "nome=" + nome + ", " : "")
+				+ (tipoConta != null ? "tipoConta=" + tipoConta : "") + "]";
 	}
 
 }

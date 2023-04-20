@@ -1,15 +1,13 @@
 package br.com.residencia.poo.pessoas;
 
-public abstract class Pessoa {
+public class Pessoa {
+	 String nome;
+	 String CPF;
+	 String senha;
+	 String tipoPessoa;
+	 String tipoConta;
 
-	private String nome;
-	private String CPF;
-	private String senha;
-	private String tipoPessoa;
-	private String tipoConta;
-
-	protected Pessoa(String nome, String cPF, String senha, String tipoPessoa, String tipoConta) {
-		this.nome = nome;
+	public Pessoa(String nome, String cPF, String senha, String tipoPessoa, String tipoConta) {
 		this.CPF = cPF;
 		this.senha = senha;
 		this.tipoPessoa = tipoPessoa;
@@ -24,9 +22,11 @@ public abstract class Pessoa {
 		return CPF;
 	}
 
+
 	public String getSenha() {
 		return senha;
 	}
+
 
 	public String getTipoPessoa() {
 		return tipoPessoa;
@@ -35,4 +35,5 @@ public abstract class Pessoa {
 	public String getTipoConta() {
 		return tipoConta;
 	}
+
 }
