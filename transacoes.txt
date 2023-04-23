@@ -1,0 +1,4 @@
+Usuário Ricardo efetuou um saque de R$ 20.0
+Saldo restante: R$ 9979.9 - 20/04/2023 17:05:43
+Usuário Ricardo efetuou um depósito de R$ 22.0 - 20/04/2023 17:06:04
+Usuário Ricardo efetuou uma transferência de R$ 1000.0 para a conta 3000 - 20/04/2023 17:07:14

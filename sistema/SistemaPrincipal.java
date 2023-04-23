@@ -10,22 +10,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import contas.Conta;
-import contas.ContaCorrente;
-import contas.ContaPoupanca;
-import pessoas.Cliente;
-import pessoas.Diretor;
-import pessoas.Gerente;
-import pessoas.Pessoa;
-import pessoas.Presidente;
+import br.com.residencia.poo.contas.Conta;
+import br.com.residencia.poo.contas.ContaCorrente;
+import br.com.residencia.poo.contas.ContaPoupanca;
+import br.com.residencia.poo.pessoas.Cliente;
+import br.com.residencia.poo.pessoas.Diretor;
+import br.com.residencia.poo.pessoas.Gerente;
+import br.com.residencia.poo.pessoas.Pessoa;
+import br.com.residencia.poo.pessoas.Presidente;
 
 public class SistemaPrincipal {
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 
-		Map<String, Pessoa> mapUsers = new HashMap<>();
-		Map<String, Conta> mapContas = new HashMap<>();
-		Map<Integer, Conta> mapContasNumeroConta = new HashMap<>();
+		Map<String, Pessoa> mapUsuarios = new HashMap<>();
+		Map<String, Conta> mapTipoConta = new HashMap<>();
+		Map<Integer, Conta> mapNumeroConta = new HashMap<>();
 		List<Object> tContas = new ArrayList<>();
 
 		String nome;
@@ -39,7 +39,7 @@ public class SistemaPrincipal {
 		double tarifacao;
 
 		// Se atentar com o Path, se o caminho do arquivo está correto
-		String path = "C:\\serratec\\POO\\Workspace\\Projetofinal\\pessoas.txt";
+		String path = "C:\\serratec\\POO\\Workspace\\ProjetoFinal\\pessoas.txt";
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		String linha = "";
 
@@ -60,19 +60,19 @@ public class SistemaPrincipal {
 			switch (tipoUsuario) {
 			case "Cliente":
 				usuario = new Cliente(nome, CPF, senha, tipoUsuario, tipoConta);
-				mapUsers.put(CPF, usuario);
+				mapUsuarios.put(CPF, usuario);
 				break;
 			case "Gerente":
 				usuario = new Gerente(nome, CPF, senha, tipoUsuario, tipoConta, agencia);
-				mapUsers.put(CPF, usuario);
+				mapUsuarios.put(CPF, usuario);
 				break;
 			case "Diretor":
 				usuario = new Diretor(nome, CPF, senha, tipoUsuario, tipoConta, agencia);
-				mapUsers.put(CPF, usuario);
+				mapUsuarios.put(CPF, usuario);
 				break;
 			case "Presidente":
 				usuario = new Presidente(nome, CPF, senha, tipoUsuario, tipoConta);
-				mapUsers.put(CPF, usuario);
+				mapUsuarios.put(CPF, usuario);
 				break;
 			}
 			// Direcionamento de dados de acordo com o tipo de conta
@@ -80,15 +80,15 @@ public class SistemaPrincipal {
 			switch (tipoConta) {
 			case "Corrente":
 				conta = new ContaCorrente(nome, CPF, tipoConta, tipoUsuario, numeroConta, agencia, saldo, tarifacao);
-				mapContas.put(CPF, conta);
-				mapContasNumeroConta.put(numeroConta, conta);
+				mapTipoConta.put(CPF, conta);
+				mapNumeroConta.put(numeroConta, conta);
 				tContas.add(conta);
 				break;
 
 			case "Poupanca":
 				conta = new ContaPoupanca(nome, CPF, tipoConta, tipoUsuario, numeroConta, agencia, saldo, tarifacao);
-				mapContas.put(CPF, conta);
-				mapContasNumeroConta.put(numeroConta, conta);
+				mapTipoConta.put(CPF, conta);
+				mapNumeroConta.put(numeroConta, conta);
 				tContas.add(conta);
 				break;
 			}
@@ -99,10 +99,9 @@ public class SistemaPrincipal {
 			System.out.println("Digite seu CPF: ");
 			Scanner sc = new Scanner(System.in);
 			String cpfParaLogar = sc.nextLine();
-			Pessoa logado = login(cpfParaLogar, mapUsers);
-			Conta logada = mapContas.get(cpfParaLogar);
-			primeiroMenu(logado.getCPF(), logada, mapContas, mapContasNumeroConta, tContas);
-
+			Pessoa logado = login(cpfParaLogar, mapUsuarios);
+			Conta logada = mapTipoConta.get(cpfParaLogar);
+			primeiroMenu(logado.getCPF(), logada, mapTipoConta, mapNumeroConta, tContas);
 		} catch (NullPointerException e) {
 		} catch (Exception e) {
 			System.out.println("");
@@ -110,11 +109,11 @@ public class SistemaPrincipal {
 	}
 
 //Login - Senha
-	public static Pessoa login(String cpfParaLogar, Map<String, Pessoa> mapUsers) {
+	public static Pessoa login(String cpfParaLogar, Map<String, Pessoa> mapUsuarios) {
 
-		Pessoa logado = mapUsers.get(cpfParaLogar);
+		Pessoa logado = mapUsuarios.get(cpfParaLogar);
 
-		if (mapUsers.get(cpfParaLogar) != null) {
+		if (mapUsuarios.get(cpfParaLogar) != null) {
 			System.out.println("Digite sua senha: ");
 			Scanner sc2 = new Scanner(System.in);
 			String senhaDigitada = sc2.next();
@@ -122,7 +121,7 @@ public class SistemaPrincipal {
 				return logado;
 			} else {
 				System.out.println("Senha incorreta, tente novamente!");
-				return login(senhaDigitada, mapUsers);
+				return login(senhaDigitada, mapUsuarios);
 			}
 		} else {
 			System.out.println("Usuário inexistente, tente novamente!");
@@ -132,7 +131,7 @@ public class SistemaPrincipal {
 
 //Primeiro menu após a entrada do usuário
 	public static void primeiroMenu(String string, Conta logada, Map<String, Conta> mapContas,
-			Map<Integer, Conta> mapContasNumeroConta, List<Object> numeroAgencias) throws IOException {
+			Map<Integer, Conta> mapNumeroConta, List<Object> tContas) throws IOException {
 
 		boolean sair = false;
 
@@ -155,17 +154,12 @@ public class SistemaPrincipal {
 			switch (operacao) {
 			case 1:
 				// Chama o Menu de movimentações
-				Conta.movimentacoes(string, logada, mapContas, mapContasNumeroConta);
+				Conta.movimentacoes(string, logada, mapContas, mapNumeroConta);
 				break;
 
 			case 2:
 				// Chama o Menu de relatórios
-				Conta.relatorios(string, logada, mapContas, mapContasNumeroConta, numeroAgencias);
-				// Pergunta se deseja continuar ou sair
-				if (verificaSairDoPrimeiroMenu()) {
-					System.out.println("Obrigado por utilizar os nossos serviços");
-					sair = true;
-				}
+				Conta.relatorios(string, logada, mapContas, mapNumeroConta, tContas);
 				break;
 			// Para sair do Programa
 			case 3:
@@ -186,11 +180,10 @@ public class SistemaPrincipal {
 	}
 
 //Método para verificação do Primeiro menu após a entrada do usuário
-	public static boolean verificaSairDoPrimeiroMenu() {
+	public static boolean verificaMenu() {
 		int optMenu = 0;
 		do {
-			System.out.println("Muito obrigado por utilizar nossos serviços!\n"
-					+ "\nDeseja realizar outra operação? Digite 1 caso SIM ou 2 caso NÃO.");
+			System.out.println("\nDeseja realizar outra operação? Digite 1 para VOLTAR ou 2 para SAIR.");
 			try {
 				optMenu = new Scanner(System.in).nextInt();
 			} catch (InputMismatchException e) {

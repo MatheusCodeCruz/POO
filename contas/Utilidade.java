@@ -16,7 +16,7 @@ public class Utilidade {
 	public static FileWriter path (int choose) throws IOException {
 
 		// *** ALTERAR PATH AQUI!!!!!!!!!
-		String path = "C:\\serratec\\POO\\Workspace\\Projetofinal\\";
+		String path = "C:\\serratec\\POO\\Workspace\\ProjetoFinal";
 
 		//1- path de alterações alterações
 		//2- path para nota fiscal/extrato
