@@ -16,6 +16,7 @@ import br.com.residencia.poo.contas.ContaPoupanca;
 import br.com.residencia.poo.pessoas.Cliente;
 import br.com.residencia.poo.pessoas.Diretor;
 import br.com.residencia.poo.pessoas.Gerente;
+import br.com.residencia.poo.pessoas.OperadorCaixa;
 import br.com.residencia.poo.pessoas.Pessoa;
 import br.com.residencia.poo.pessoas.Presidente;
 
@@ -44,7 +45,7 @@ public class SistemaPrincipal {
 		String linha = "";
 
 		while ((linha = buffRead.readLine()) != null) {
-
+			// Direcionamento de dados de acordo com a ordem do pessoas.txt
 			String[] dados = linha.split(",");
 			nome = dados[0];
 			CPF = dados[1];
@@ -55,11 +56,16 @@ public class SistemaPrincipal {
 			agencia = Integer.parseInt(dados[6]);
 			saldo = Double.parseDouble(dados[7]);
 			tarifacao = Double.parseDouble(dados[8]);
+
 			// Direcionamento de dados de acordo com o tipo de usuário
 			Pessoa usuario = null;
 			switch (tipoUsuario) {
 			case "Cliente":
 				usuario = new Cliente(nome, CPF, senha, tipoUsuario, tipoConta);
+				mapUsuarios.put(CPF, usuario);
+				break;
+			case "Operador":
+				usuario = new OperadorCaixa(nome, CPF, senha, tipoUsuario, tipoConta, agencia);
 				mapUsuarios.put(CPF, usuario);
 				break;
 			case "Gerente":
@@ -94,9 +100,33 @@ public class SistemaPrincipal {
 			}
 		}
 		buffRead.close();
+
+		System.out.println(
+				"                              /^\\\r\n" + "           L L               /   \\               L L\r\n"
+						+ "        __/|/|_             /  .  \\             _|\\|\\__\r\n"
+						+ "       /_| [_[_\\           /     .-\\           /_]_] |_\\\r\n"
+						+ "      /__\\  __`-\\_____    /    .    \\    _____/-`__  /__\\\r\n"
+						+ "     /___] /=@>  _   {>  /-.         \\  <}   _  <@=\\ [___\\\r\n"
+						+ "    /____/     /` `--/  /      .      \\  \\--` `\\     \\____\\\r\n"
+						+ "   /____/  \\____/`-._> /               \\ <_.-`\\____/  \\____\\\r\n"
+						+ "  /____/    /__/      /-._     .   _.-  \\      \\__\\    \\____\\\r\n"
+						+ " /____/    /__/      /         .         \\      \\__\\    \\____\\\r\n"
+						+ "|____/_  _/__/      /          .          \\      \\__\\_  _\\____|\r\n"
+						+ " \\__/_ ``_|_/      /      -._  .        _.-\\      \\_|_`` _\\___/\r\n"
+						+ "   /__`-`__\\      <_         `-;       |   _>      /__`-`__\\\r\n"
+						+ "      `-`           `-._       ;       _.-`           `-`\r\n"
+						+ "                        `-._   ;   _.-`\r\n" + "                            `-._.-`");
+		System.out.println("\n██████  ██    ██ ██████   █████  ███    ███ ██ ██████  \r\n"
+				+ "██   ██  ██  ██  ██   ██ ██   ██ ████  ████ ██ ██   ██ \r\n"
+				+ "██████    ████   ██████  ███████ ██ ████ ██ ██ ██   ██ \r\n"
+				+ "██         ██    ██   ██ ██   ██ ██  ██  ██ ██ ██   ██ \r\n"
+				+ "██         ██    ██   ██ ██   ██ ██      ██ ██ ██████  ");
+		System.out.println();
 //Login - Usuário (CPF)
 		try {
+			System.out.println("Para acessar o Sistema: ");
 			System.out.println("Digite seu CPF: ");
+			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			String cpfParaLogar = sc.nextLine();
 			Pessoa logado = login(cpfParaLogar, mapUsuarios);
@@ -115,6 +145,7 @@ public class SistemaPrincipal {
 
 		if (mapUsuarios.get(cpfParaLogar) != null) {
 			System.out.println("Digite sua senha: ");
+			@SuppressWarnings("resource")
 			Scanner sc2 = new Scanner(System.in);
 			String senhaDigitada = sc2.next();
 			if (senhaDigitada.equals(logado.getSenha())) {
@@ -137,12 +168,23 @@ public class SistemaPrincipal {
 
 		do {
 			// Primeiro Menu
+			System.out.println();
+			logo();
+			System.out.println("\n██████  ██    ██ ██████   █████  ███    ███ ██ ██████  \r\n"
+					+ "██   ██  ██  ██  ██   ██ ██   ██ ████  ████ ██ ██   ██ \r\n"
+					+ "██████    ████   ██████  ███████ ██ ████ ██ ██ ██   ██ \r\n"
+					+ "██         ██    ██   ██ ██   ██ ██  ██  ██ ██ ██   ██ \r\n"
+					+ "██         ██    ██   ██ ██   ██ ██      ██ ██ ██████  ");
+			System.out.println();
 			System.out.println("\nSeja bem vindo, " + logada.getNome() + "!");
 			System.out.println("\nTipo da conta: " + logada.getTipoConta() + "!");
 			System.out.println(
 					"Numero da Conta: " + logada.getNumeroDaConta() + "\nAgência: " + logada.getAgencia() + "\n");
 			System.out.println("Escolha a operação desejada:" + "\n1- Movimentações\n2- Relatórios\n3- Sair ");
+			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
+			System.out.println();
+			System.out.println();
 			int operacao;
 			try {
 				operacao = sc.nextInt();
@@ -152,13 +194,13 @@ public class SistemaPrincipal {
 				continue;
 			}
 			switch (operacao) {
+			// Chama o Menu de movimentações
 			case 1:
-				// Chama o Menu de movimentações
-				Conta.movimentacoes(string, logada, mapContas, mapNumeroConta);
+				Conta.movimentacoes(string, logada, mapContas, mapNumeroConta, tContas);
 				break;
 
+			// Chama o Menu de relatórios
 			case 2:
-				// Chama o Menu de relatórios
 				Conta.relatorios(string, logada, mapContas, mapNumeroConta, tContas);
 				break;
 			// Para sair do Programa
@@ -179,19 +221,175 @@ public class SistemaPrincipal {
 		} while (!sair);
 	}
 
-//Método para verificação do Primeiro menu após a entrada do usuário
+	// Método para verificação de volta ou saída
+	@SuppressWarnings("resource")
 	public static boolean verificaMenu() {
 		int optMenu = 0;
 		do {
-			System.out.println("\nDeseja realizar outra operação? Digite 1 para VOLTAR ou 2 para SAIR.");
+			System.out.println("\n\nDeseja realizar outra operação? Digite 1 para VOLTAR ou 2 para SAIR.");
 			try {
 				optMenu = new Scanner(System.in).nextInt();
+				if (optMenu != 1 && optMenu != 2) {
+					System.out.println("\nDigite uma opção válida.\n");
+				}
 			} catch (InputMismatchException e) {
 				System.out.println("Entrada inválida! Digite um número válido.");
 				continue;
 			}
 		} while (optMenu < 1 || optMenu > 2);
 		return optMenu == 2;
+	}
+
+	public static void limpaTela() {
+		for (int i = 0; i < 8; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela7() {
+		for (int i = 0; i < 7; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela14() {
+		for (int i = 0; i < 14; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void logoMenu() {
+		System.out.println();
+		limpaTela();
+		logo();
+		System.out.println("\n██████  ██    ██ ██████   █████  ███    ███ ██ ██████  \r\n"
+				+ "██   ██  ██  ██  ██   ██ ██   ██ ████  ████ ██ ██   ██ \r\n"
+				+ "██████    ████   ██████  ███████ ██ ████ ██ ██ ██   ██ \r\n"
+				+ "██         ██    ██   ██ ██   ██ ██  ██  ██ ██ ██   ██ \r\n"
+				+ "██         ██    ██   ██ ██   ██ ██      ██ ██ ██████  ");
+		System.out.println();
+	}
+
+	public static void logo() {
+		espaco8();
+		piramide1();
+		System.out.println();
+		espaco7();
+		piramide3();
+		System.out.println();
+		espaco6();
+		piramide5();
+		System.out.println();
+		espaco5();
+		piramide7();
+		System.out.println();
+		espaco4();
+		piramide9();
+		System.out.println();
+		espaco3();
+		piramide11();
+		System.out.println();
+		espaco2();
+		piramide13();
+		System.out.println();
+		espaco1();
+		piramide15();
+	}
+
+	public static void espaco8() {
+		for (int i = 0; i < 8; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco7() {
+		for (int i = 0; i < 7; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco6() {
+		for (int i = 0; i < 6; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco5() {
+		for (int i = 0; i < 5; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco4() {
+		for (int i = 0; i < 4; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco3() {
+		for (int i = 0; i < 3; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco2() {
+		for (int i = 0; i < 2; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void espaco1() {
+		for (int i = 0; i < 1; i++) {
+			System.out.print(" ");
+		}
+	}
+
+	public static void piramide15() {
+		for (int i = 0; i < 15; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide13() {
+		for (int i = 0; i < 13; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide11() {
+		for (int i = 0; i < 11; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide9() {
+		for (int i = 0; i < 9; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide7() {
+		for (int i = 0; i < 7; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide5() {
+		for (int i = 0; i < 5; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide3() {
+		for (int i = 0; i < 3; i++) {
+			System.out.print("*");
+		}
+	}
+
+	public static void piramide1() {
+		for (int i = 0; i < 1; i++) {
+			System.out.print("*");
+		}
 	}
 
 }

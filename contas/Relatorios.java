@@ -10,6 +10,7 @@ public class Relatorios extends Conta {
 		super(tipoConta, CPFDoTitular, nome, tipoPessoa, numeroDaConta, agencia, saldo, tarifacao);
 	}
 
+	// Escrita que vai para o .txt de Transações
 	public static PrintWriter relDeposito(String nome, double valor, double valor2) throws IOException {
 		Arquivos.path(1);
 		String data = Data.Data();
@@ -33,6 +34,7 @@ public class Relatorios extends Conta {
 		return escritaPath;
 	}
 
+	// Escrita que vai para o .txt de Transações
 	public static PrintWriter relSaque(String nome, double valor, double valor2) throws IOException {
 		Arquivos.path(1);
 		String data = Data.Data();
@@ -44,6 +46,7 @@ public class Relatorios extends Conta {
 		return escritaPath;
 	}
 
+	// Escrita que vai para o .txt de Transações
 	public static PrintWriter relTransferencia(String nome, double valor, int destino) throws IOException {
 		Arquivos.path(1);
 		String data = Data.Data();
@@ -54,6 +57,7 @@ public class Relatorios extends Conta {
 		return escritaPath;
 	}
 
+	// Escrita que vai para o .txt de Transações
 	public static PrintWriter relSeguroDeVida(String nome, double valor) throws IOException {
 		Arquivos.path(1);
 		String data = Data.Data();
@@ -63,6 +67,7 @@ public class Relatorios extends Conta {
 		return escritaPath;
 	}
 
+	// Escrita que vai para o .txt de nfSaque
 	public static PrintWriter nfSaque(String nome, String cPFDoTitular, double valor) throws IOException {
 		Arquivos.path(2);
 		String data = Data.Data();
@@ -74,6 +79,7 @@ public class Relatorios extends Conta {
 		return escritaPath;
 	}
 
+	// Escrita que vai para o .txt de nfDeposito
 	public static PrintWriter nfDeposito(String nome, String cPFDoTitular, double valor) throws IOException {
 		Arquivos.path(3);
 		String data = Data.Data();
@@ -85,17 +91,20 @@ public class Relatorios extends Conta {
 		return escritaPath;
 	}
 
-	public static PrintWriter nfTransferencia(String nome, String cPFDoTitular, double valor) throws IOException {
+	// Escrita que vai para o .txt de nfTransferencia
+	public static PrintWriter nfTransferencia(String nome, String cPFDoTitular, double valor, String destino)
+			throws IOException {
 		Arquivos.path(4);
 		String data = Data.Data();
 		PrintWriter escritaPath = new PrintWriter(Arquivos.path(4));
 		escritaPath.printf("\n-----------------------NOTA FISCAL-----------------------"
 				+ "\n-------------------------TRANSFERÊNCIA-------------------------" + "\nUsuário: " + nome + ", CPF: "
-				+ cPFDoTitular + "- " + data + "\nValor da Transferência: " + valor);
+				+ cPFDoTitular + "- " + data + "\nValor da Transferência: " + valor + " para: " + destino);
 		escritaPath.close();
 		return escritaPath;
 	}
 
+	// Escrita que vai para o .txt de nfSeguro
 	public static PrintWriter nfSeguro(String nome, String cPFDoTitular, double valor) throws IOException {
 		Arquivos.path(5);
 		String data = Data.Data();

@@ -1,5 +1,4 @@
 package br.com.residencia.poo.contas;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -39,6 +38,7 @@ public class Arquivos {
 		return null;
 	}
 
+	// Método de Formatação de moeda
 	public static String formatInt(double valor) {
 
 		DecimalFormat df = new DecimalFormat("#.##");

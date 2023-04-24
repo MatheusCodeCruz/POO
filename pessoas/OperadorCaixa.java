@@ -2,19 +2,47 @@ package br.com.residencia.poo.pessoas;
 
 public class OperadorCaixa extends Funcionario {
 
-	private String agenciaCaixa;
+	
+	String cargo = "Operador";
+	static int agencia;
+	private static double salario = 3500.0;
+	private static double bonificacao = 1.2;
+	private static double salarioOp = 0.0;
 
-	public OperadorCaixa(String nome, String cPF, String senha, String tipoPessoa, String tipoConta, String agenciaCaixa) {
-		super(nome, cPF, senha, tipoPessoa, tipoConta);
-		this.setAgenciaCaixa(agenciaCaixa);
+	public OperadorCaixa(String nome, String cPF, String senha, String tipoUsuario, String tipoConta, int agencia) {
+		super(nome, cPF, senha, tipoUsuario, tipoConta);
+		OperadorCaixa.agencia = agencia;
+	}
+	
+	public static double salarioOperadorCaixa() {
+		salarioOp = salario * bonificacao;
+		return salarioOp;
+	}
+	
+//	public static void somaAgencia () {
+//		if() != null) {
+//			
+//		}
+//	}
+
+	public String getCargo() {
+		return cargo;
 	}
 
-	public String getAgenciaCaixa() {
-		return agenciaCaixa;
+	public static int getAgencia() {
+		return agencia;
 	}
 
-	public void setAgenciaCaixa(String agenciaCaixa) {
-		this.agenciaCaixa = agenciaCaixa;
+	public static double getSalario() {
+		return salario;
+	}
+
+	public static double getBonificacao() {
+		return bonificacao;
+	}
+
+	public static double getSalarioD() {
+		return salarioOp;
 	}
 	
 }
