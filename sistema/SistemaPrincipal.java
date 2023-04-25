@@ -40,7 +40,7 @@ public class SistemaPrincipal {
 		double tarifacao;
 
 		// Se atentar com o Path, se o caminho do arquivo está correto
-		String path = "C:\\serratec\\POO\\Workspace\\ProjetoFinal\\pessoas.txt";
+		String path = "C:\\ws-eclipse\\trabalhofinal\\pessoas.txt";
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		String linha = "";
 
@@ -101,33 +101,15 @@ public class SistemaPrincipal {
 		}
 		buffRead.close();
 
-		System.out.println(
-				"                              /^\\\r\n" + "           L L               /   \\               L L\r\n"
-						+ "        __/|/|_             /  .  \\             _|\\|\\__\r\n"
-						+ "       /_| [_[_\\           /     .-\\           /_]_] |_\\\r\n"
-						+ "      /__\\  __`-\\_____    /    .    \\    _____/-`__  /__\\\r\n"
-						+ "     /___] /=@>  _   {>  /-.         \\  <}   _  <@=\\ [___\\\r\n"
-						+ "    /____/     /` `--/  /      .      \\  \\--` `\\     \\____\\\r\n"
-						+ "   /____/  \\____/`-._> /               \\ <_.-`\\____/  \\____\\\r\n"
-						+ "  /____/    /__/      /-._     .   _.-  \\      \\__\\    \\____\\\r\n"
-						+ " /____/    /__/      /         .         \\      \\__\\    \\____\\\r\n"
-						+ "|____/_  _/__/      /          .          \\      \\__\\_  _\\____|\r\n"
-						+ " \\__/_ ``_|_/      /      -._  .        _.-\\      \\_|_`` _\\___/\r\n"
-						+ "   /__`-`__\\      <_         `-;       |   _>      /__`-`__\\\r\n"
-						+ "      `-`           `-._       ;       _.-`           `-`\r\n"
-						+ "                        `-._   ;   _.-`\r\n" + "                            `-._.-`");
-		System.out.println("\n██████  ██    ██ ██████   █████  ███    ███ ██ ██████  \r\n"
-				+ "██   ██  ██  ██  ██   ██ ██   ██ ████  ████ ██ ██   ██ \r\n"
-				+ "██████    ████   ██████  ███████ ██ ████ ██ ██ ██   ██ \r\n"
-				+ "██         ██    ██   ██ ██   ██ ██  ██  ██ ██ ██   ██ \r\n"
-				+ "██         ██    ██   ██ ██   ██ ██      ██ ██ ██████  ");
-		System.out.println();
+		logoMenu();
 //Login - Usuário (CPF)
 		try {
+			System.out.println("\nSeja muito bem vinda(o)!");
 			System.out.println("Para acessar o Sistema: ");
-			System.out.println("Digite seu CPF: ");
+			System.out.println("\nDigite seu CPF: ");
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
+			System.out.println();
 			String cpfParaLogar = sc.nextLine();
 			Pessoa logado = login(cpfParaLogar, mapUsuarios);
 			Conta logada = mapTipoConta.get(cpfParaLogar);
@@ -144,9 +126,10 @@ public class SistemaPrincipal {
 		Pessoa logado = mapUsuarios.get(cpfParaLogar);
 
 		if (mapUsuarios.get(cpfParaLogar) != null) {
-			System.out.println("Digite sua senha: ");
+			System.out.println("\nDigite sua senha: ");
 			@SuppressWarnings("resource")
 			Scanner sc2 = new Scanner(System.in);
+			System.out.println();
 			String senhaDigitada = sc2.next();
 			if (senhaDigitada.equals(logado.getSenha())) {
 				return logado;
@@ -167,24 +150,15 @@ public class SistemaPrincipal {
 		boolean sair = false;
 
 		do {
+			logoMenu();
 			// Primeiro Menu
-			System.out.println();
-			logo();
-			System.out.println("\n██████  ██    ██ ██████   █████  ███    ███ ██ ██████  \r\n"
-					+ "██   ██  ██  ██  ██   ██ ██   ██ ████  ████ ██ ██   ██ \r\n"
-					+ "██████    ████   ██████  ███████ ██ ████ ██ ██ ██   ██ \r\n"
-					+ "██         ██    ██   ██ ██   ██ ██  ██  ██ ██ ██   ██ \r\n"
-					+ "██         ██    ██   ██ ██   ██ ██      ██ ██ ██████  ");
-			System.out.println();
-			System.out.println("\nSeja bem vindo, " + logada.getNome() + "!");
+			System.out.println("Seja bem vindo, " + logada.getNome() + "!");
 			System.out.println("\nTipo da conta: " + logada.getTipoConta() + "!");
 			System.out.println(
 					"Numero da Conta: " + logada.getNumeroDaConta() + "\nAgência: " + logada.getAgencia() + "\n");
-			System.out.println("Escolha a operação desejada:" + "\n1- Movimentações\n2- Relatórios\n3- Sair ");
+			System.out.println("Escolha a operação desejada:" + "\n[1] Movimentações\n[2] Relatórios\n[3] Sair ");
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
-			System.out.println();
-			System.out.println();
 			int operacao;
 			try {
 				operacao = sc.nextInt();
@@ -226,7 +200,7 @@ public class SistemaPrincipal {
 	public static boolean verificaMenu() {
 		int optMenu = 0;
 		do {
-			System.out.println("\n\nDeseja realizar outra operação? Digite 1 para VOLTAR ou 2 para SAIR.");
+			System.out.println("\n\nDeseja realizar outra operação? Pressione [1] para VOLTAR ou [2] para SAIR.");
 			try {
 				optMenu = new Scanner(System.in).nextInt();
 				if (optMenu != 1 && optMenu != 2) {
@@ -240,8 +214,32 @@ public class SistemaPrincipal {
 		return optMenu == 2;
 	}
 
-	public static void limpaTela() {
-		for (int i = 0; i < 8; i++) {
+	public static void limpaTela2() {
+		for (int i = 0; i < 2; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela3() {
+		for (int i = 0; i < 3; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela4() {
+		for (int i = 0; i < 4; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela5() {
+		for (int i = 0; i < 5; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela6() {
+		for (int i = 0; i < 6; i++) {
 			System.out.println();
 		}
 	}
@@ -252,16 +250,94 @@ public class SistemaPrincipal {
 		}
 	}
 
+	public static void limpaTela8() {
+		for (int i = 0; i < 8; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela9() {
+		for (int i = 0; i < 9; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela13() {
+		for (int i = 0; i < 13; i++) {
+			System.out.println();
+		}
+	}
+
 	public static void limpaTela14() {
 		for (int i = 0; i < 14; i++) {
 			System.out.println();
 		}
 	}
 
+	public static void limpaTela17() {
+		for (int i = 0; i < 17; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela18() {
+		for (int i = 0; i < 18; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela19() {
+		for (int i = 0; i < 19; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela21() {
+		for (int i = 0; i < 21; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela23() {
+		for (int i = 0; i < 23; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela24() {
+		for (int i = 0; i < 24; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela25() {
+		for (int i = 0; i < 25; i++) {
+			System.out.println();
+		}
+	}
+
+	public static void limpaTela26() {
+		for (int i = 0; i < 26; i++) {
+			System.out.println();
+		}
+	}
+
 	public static void logoMenu() {
-		System.out.println();
-		limpaTela();
-		logo();
+		System.out.println(
+				"                              /^\\\r\n" + "           L L               /   \\               L L\r\n"
+						+ "        __/|/|_             /  .  \\             _|\\|\\__\r\n"
+						+ "       /_| [_[_\\           /     .-\\           /_]_] |_\\\r\n"
+						+ "      /__\\  __`-\\_____    /    .    \\    _____/-`__  /__\\\r\n"
+						+ "     /___] /=@>  _   {>  /-.         \\  <}   _  <@=\\ [___\\\r\n"
+						+ "    /____/     /` `--/  /      .      \\  \\--` `\\     \\____\\\r\n"
+						+ "   /____/  \\____/`-._> /               \\ <_.-`\\____/  \\____\\\r\n"
+						+ "  /____/    /__/      /-._     .   _.-  \\      \\__\\    \\____\\\r\n"
+						+ " /____/    /__/      /         .         \\      \\__\\    \\____\\\r\n"
+						+ "|____/_  _/__/      /          .          \\      \\__\\_  _\\____|\r\n"
+						+ " \\__/_ ``_|_/      /      -._  .        _.-\\      \\_|_`` _\\___/\r\n"
+						+ "   /__`-`__\\      <_         `-;       |   _>      /__`-`__\\\r\n"
+						+ "      `-`           `-._       ;       _.-`           `-`\r\n"
+						+ "                        `-._   ;   _.-`\r\n" + "                            `-._.-`");
 		System.out.println("\n██████  ██    ██ ██████   █████  ███    ███ ██ ██████  \r\n"
 				+ "██   ██  ██  ██  ██   ██ ██   ██ ████  ████ ██ ██   ██ \r\n"
 				+ "██████    ████   ██████  ███████ ██ ████ ██ ██ ██   ██ \r\n"

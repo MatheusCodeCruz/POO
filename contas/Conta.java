@@ -49,13 +49,12 @@ public abstract class Conta implements Comparable<Conta> {
 
 		boolean sair = false;
 
-		SistemaPrincipal.logoMenu();
 		do {
-			System.out.println("Escolha a operação desejada:\n1- Saque\n2- Depósito\n"
-					+ "3- Transferência\n4- Seguro de Vida\n5- Voltar ");
+			SistemaPrincipal.logoMenu();
+			System.out.println("\n\n\n\nEscolha a operação desejada:\n[1] Saque\n[2] Depósito\n"
+					+ "[3] Transferência\n[4] Seguro de Vida\n[5] Voltar ");
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
-			SistemaPrincipal.limpaTela7();
 			int operacao;
 			try {
 				operacao = sc.nextInt();
@@ -69,6 +68,8 @@ public abstract class Conta implements Comparable<Conta> {
 			// Para saque
 			case 1:
 				try {
+					SistemaPrincipal.logoMenu();
+					SistemaPrincipal.limpaTela9();
 					System.out.println("Digite o valor do saque:");
 					@SuppressWarnings("resource")
 					double valorASacar = new Scanner(System.in).nextDouble();
@@ -93,32 +94,49 @@ public abstract class Conta implements Comparable<Conta> {
 						saque(valorASacar, logada);
 						logada.saldo = logada.saldo - 0.1;
 						logada.tarifacao += 0.1;
-						System.out.println("\nTaxa de saque: R$ 0,10\nSaldo restante R$ "
-								+ Arquivos.formatInt(logada.saldo) + "\nO total de tarifas cobradas até agora é de: R$ "
-								+ Arquivos.formatInt(logada.getTarifacao()));
-						Relatorios.relSaque(logada.nome, valorASacar, logada.saldo);
+						System.out.println("|-------------------------PYRAMID-------------------------|"
+								+ "\n|--------------------------SAQUE--------------------------|"
+								+ "\n Taxa de saque: R$0,10" + "\n Valor do saque: R$ "
+								+ Arquivos.formatInt(valorASacar) + "\n Saldo restante: R$ "
+								+ Arquivos.formatInt(logada.saldo)
+								+ "\n O total de tarifas cobradas até agora é de: R$ "
+								+ Arquivos.formatInt(logada.getTarifacao()) + "\n " + Data.Data());
+						System.out.println("|-------------------------PYRAMID-------------------------|");
+						Relatorios.relSaque(logada.tipoUsuario, logada.nome, valorASacar, logada.saldo);
 						Relatorios.nfSaque(logada.nome, logada.CPFDoTitular, valorASacar);
+						SistemaPrincipal.limpaTela19();
 						System.out.println("\nRetire seu recibo no caixa!\n");
 					} else if (verificaValor(valorASacar) && valorASacar <= logada.getSaldo()
 							&& logada.getTipoConta().equals("Poupanca")) {
 						saque(valorASacar, logada);
-						System.out.println("Você acabou de fazer um saque, seu Saldo restante é de R$ "
-								+ Arquivos.formatInt(logada.saldo));
-						Relatorios.relSaque(logada.nome, valorASacar, logada.saldo);
+						System.out.println("|-------------------------PYRAMID-------------------------|"
+								+ "\n|--------------------------SAQUE--------------------------|"
+								+ "\n Valor do saque: R$ " + Arquivos.formatInt(valorASacar) + "\n Saldo restante: R$ "
+								+ Arquivos.formatInt(logada.saldo) + "\n " + Data.Data());
+						System.out.println("|-------------------------PYRAMID-------------------------|");
+						Relatorios.relSaque(logada.tipoUsuario, logada.nome, valorASacar, logada.saldo);
 						Relatorios.nfDeposito(logada.nome, logada.nome, valorASacar);
+						SistemaPrincipal.limpaTela21();
 						System.out.println("\nRetire seu recibo no caixa!\n");
 					} else {
-						System.out.println("Não foi possível realizar a operação. " + "Digite um valor válido. \n");
+						System.out.println("Saldo indisponível. Verifique seu saldo abaixo:");
+						SistemaPrincipal.limpaTela7();
+						System.out.println("|--------------------------PYRAMID--------------------------|"
+								+ "\n Saldo da Conta: R$ " + Arquivos.formatInt(logada.saldo) 
+								+ "\n|--------------------------PYRAMID--------------------------|");
+						SistemaPrincipal.limpaTela19();
 					}
 					MenuAtalhos.saidaMenu();
 					break;
 				} catch (Exception ee) {
-					System.out.println("Você inseriu um caracter invalido. " + "Por favor, tente novamente.\n");
+					System.out.println("Você inseriu um caracter invalido. Por favor, tente novamente.\n");
 					break;
 				}
 				// Para deposito
 			case 2:
 				try {
+					SistemaPrincipal.logoMenu();
+					SistemaPrincipal.limpaTela8();
 					System.out.println("\nDigite o valor que deseja depositar na sua Conta:");
 					@SuppressWarnings("resource")
 					double valorADepositar = new Scanner(System.in).nextDouble();
@@ -126,41 +144,51 @@ public abstract class Conta implements Comparable<Conta> {
 						deposito(valorADepositar, logada);
 						logada.saldo = logada.saldo - 0.1;
 						logada.tarifacao += 0.1;
-						System.out.println("\nTaxa de deposito: R$ 0,10");
-						System.out.println("Depósito efetuado com sucesso para " + logada.nome + "\nCPF: "
-								+ logada.CPFDoTitular + "\nConta número: " + logada.numeroDaConta + "\nAgência: "
-								+ logada.agencia + "\nO total de tarifas cobradas até agora é de: R$ "
-								+ Arquivos.formatInt(logada.getTarifacao()));
+						System.out.println("|-------------------------PYRAMID-------------------------|"
+								+ "\n|------------------------DEPÓSITO-------------------------|"
+								+ "\n Taxa de Depósito: R$ 0,10\n Valor do Depósito: R$ "
+								+ Arquivos.formatInt(valorADepositar) + "\n Valor depositado na Conta: "
+								+ logada.numeroDaConta + "-" + logada.agencia + ", Conta " + logada.tipoConta
+								+ "\n O total de tarifas cobradas até agora é de: R$ "
+								+ Arquivos.formatInt(logada.getTarifacao()) + "\n " + Data.Data());
+						System.out.println("|-------------------------PYRAMID-------------------------|");
+						SistemaPrincipal.limpaTela17();
 						String.format("%.2f", logada.saldo);
-						Relatorios.relDeposito(logada.nome, valorADepositar, logada.saldo);
+						Relatorios.relDeposito(logada.tipoUsuario, logada.nome, valorADepositar, logada.saldo);
 						Relatorios.nfDeposito(logada.nome, logada.CPFDoTitular, valorADepositar);
-						System.out.println("\nSeu Saldo passou a ser: R$" + Arquivos.formatInt(logada.saldo));
+						SistemaPrincipal.limpaTela3();
 						System.out.println("\nRetire seu recibo no caixa!");
 					} else if (verificaValor(valorADepositar) && logada.getTipoConta().equals("Poupanca")) {
 						deposito(valorADepositar, logada);
-						Relatorios.relDeposito(logada.nome, valorADepositar, logada.saldo);
+						Relatorios.relDeposito(logada.tipoUsuario, logada.nome, valorADepositar, logada.saldo);
 						Relatorios.nfDeposito(logada.nome, logada.CPFDoTitular, valorADepositar);
-						System.out.println(
-								"Depósito efetuado com sucesso para " + logada.nome + ".\nCPF: " + logada.CPFDoTitular
-										+ "\nConta número: " + logada.numeroDaConta + "\nAgência: " + logada.agencia);
-						System.out.println("\nSeu Saldo passou a ser: R$" + Arquivos.formatInt(logada.saldo));
+						System.out.println("|-------------------------PYRAMID-------------------------|"
+								+ "\n|------------------------DEPÓSITO-------------------------|"
+								+ "\n Valor do Depósito: R$ " + Arquivos.formatInt(valorADepositar)
+								+ "\n Valor depositado na Conta: " + logada.numeroDaConta + "-" + logada.agencia
+								+ ", Conta " + logada.tipoConta + "\n " + Data.Data());
+						System.out.println("|-------------------------PYRAMID-------------------------|");
+						SistemaPrincipal.limpaTela19();
 						System.out.println("\nRetire seu recibo no caixa!");
+						SistemaPrincipal.limpaTela3();
 					} else {
-						System.out.println("\nNão foi possivel realizar a operação. " + "Digite um valor valido. \n");
+						System.out.println("\nNão foi possivel realizar a operação. Digite um valor válido. \n");
 					}
 					MenuAtalhos.saidaMenu();
 					break;
 				} catch (Exception ee) {
-					System.out.println("\nVocê inseriu um caracter invalido. " + "Por favor, tente novamente.\n");
+					System.out.println("\nVocê inseriu um caracter invalido. Por favor, tente novamente.\n");
 					break;
 				}
 				// Para Transferência
 			case 3:
 				try {
+					SistemaPrincipal.logoMenu();
 					List<Integer> numC = new ArrayList<>();
 					for (Conta conta : mapNumeroConta.values()) {
 						numC.add(conta.getNumeroDaConta());
 					}
+					SistemaPrincipal.limpaTela9();
 					System.out.println("Digite a conta de destino");
 					@SuppressWarnings("resource")
 					int contaDestino = new Scanner(System.in).nextInt();
@@ -171,11 +199,16 @@ public abstract class Conta implements Comparable<Conta> {
 					}
 					if (mapNumeroConta.get(contaDestino) != null) {
 						Conta temporaria = mapNumeroConta.get(contaDestino);
-						System.out.println("\nNome: " + temporaria.nome + "\nConta: " + temporaria.tipoConta
+						SistemaPrincipal.logoMenu();
+						System.out.println("\n\nNome: " + temporaria.nome + "\nConta: " + temporaria.tipoConta
 								+ "\nConta número: " + temporaria.numeroDaConta + "\nAgência: " + temporaria.agencia);
-						System.out
-								.println("É cobrado uma taxa de R$0,20 para " + "transferências pela Conta Corrente\n");
-						System.out.println("\nDigite o valor da transferência para " + temporaria.nome + ": R$");
+						if (logada.getTipoConta().equals("Corrente")) {
+							System.out.println(
+									"É cobrado uma taxa de R$0,20 para " + "transferências pela Conta Corrente");
+						}else if(logada.getTipoConta().equals("Poupanca")) {
+							System.out.println();
+						}
+						System.out.println("\n\nDigite o valor da transferência para " + temporaria.nome + ": R$");
 						@SuppressWarnings("resource")
 						double valorATransferir = new Scanner(System.in).nextDouble();
 						if (verificaValor(valorATransferir) && valorATransferir <= logada.getSaldo()
@@ -184,44 +217,63 @@ public abstract class Conta implements Comparable<Conta> {
 							temporaria.saldo += valorATransferir;
 							logada.saldo = logada.saldo - 0.1;
 							logada.tarifacao += 0.2;
-							System.out.println("Transferencia efetuada com sucesso para " + temporaria.nome
-									+ "\nSaldo restante: R$" + Arquivos.formatInt(logada.saldo)
-									+ "\nO total de tarifas cobradas até agora é de: R$ "
-									+ Arquivos.formatInt(logada.getTarifacao()));
-							Relatorios.relTransferencia(logada.nome, valorATransferir, contaDestino);
+							System.out.println("|--------------------------PYRAMID--------------------------|"
+									+ "\n|----------------------TRANSFERÊNCIA------------------------|"
+									+ "\n Transferência efetuada com sucesso para " + temporaria.nome + " "
+									+ temporaria.numeroDaConta + "-" + temporaria.agencia
+									+ "\n Valor da Transferência: R$" + Arquivos.formatInt(valorATransferir)
+									+ "\n O total de tarifas cobradas até agora é de: R$ "
+									+ Arquivos.formatInt(logada.getTarifacao()) + "\n " + Data.Data());
+							System.out.println("|--------------------------PYRAMID--------------------------|");
+							Relatorios.relTransferencia(logada.tipoUsuario, logada.nome, valorATransferir, logada.saldo,
+									temporaria.nome, contaDestino, temporaria.agencia);
 							Relatorios.nfTransferencia(logada.nome, logada.CPFDoTitular, valorATransferir,
-									temporaria.nome);
+									temporaria.nome, temporaria.numeroDaConta, temporaria.agencia);
+							SistemaPrincipal.limpaTela23();
 							MenuAtalhos.saidaMenu();
 							break;
 						} else if (verificaValor(valorATransferir) && valorATransferir <= logada.getSaldo()
 								&& logada.getTipoConta().equals("Poupanca")) {
 							logada.saldo -= valorATransferir;
 							temporaria.saldo += valorATransferir;
-							Relatorios.relTransferencia(logada.nome, valorATransferir, contaDestino);
+							Relatorios.relTransferencia(logada.tipoUsuario, logada.nome, valorATransferir, logada.saldo,
+									temporaria.nome, contaDestino, temporaria.agencia);
 							Relatorios.nfTransferencia(logada.nome, logada.CPFDoTitular, valorATransferir,
-									temporaria.nome);
-							System.out.println("Transferencia efetuada com sucesso para " + temporaria.nome + "\nCPF: "
-									+ temporaria.CPFDoTitular + "\nConta número: " + temporaria.numeroDaConta
-									+ "\nAgência: " + temporaria.agencia);
-							MenuAtalhos.saidaMenu();
+									temporaria.nome, temporaria.numeroDaConta, temporaria.agencia);
+							System.out.println("|--------------------------PYRAMID--------------------------|"
+									+ "\n|----------------------TRANSFERÊNCIA------------------------|"
+									+ "\n Transferência efetuada com sucesso para " + temporaria.nome + " "
+									+ temporaria.numeroDaConta + "-" + temporaria.agencia
+									+ "\n Valor da Transferência: R$ " + Arquivos.formatInt(valorATransferir) + "\n "
+									+ Data.Data());
+							System.out.println("|-------------------------PYRAMID-------------------------|");
+							SistemaPrincipal.limpaTela24();
 						} else {
-							System.out.println("Não foi possivel realizar a operação, voltando ao Menu.\n");
-							return;
+							System.out.println("Saldo indisponível. Verifique seu saldo abaixo:\n");
+							System.out.println("|--------------------------PYRAMID--------------------------|"
+									+ "\n Saldo da Conta: R$ " + Arquivos.formatInt(logada.saldo) 
+									+ "\n|--------------------------PYRAMID--------------------------|");
+							SistemaPrincipal.limpaTela25();
 						}
 					}
+					MenuAtalhos.saidaMenu();
 					break;
 				} catch (Exception ee) {
-					System.out.println("Você inseriu um caracter invalido. Por favor, " + "tente novamente. \n");
+					System.out.println("Você inseriu um caracter invalido. Por favor, tente novamente. \n");
 					break;
 				}
 				// Para Seguro de Vida
 			case 4:
 				try {
+					SistemaPrincipal.logoMenu();
+					SistemaPrincipal.limpaTela9();
 					System.out.println("Digite o valor que deseja assegurar: ");
 					@SuppressWarnings("resource")
 					double optValor = new Scanner(System.in).nextDouble();
 					if (logada.getSaldo() >= optValor * 0.2) {
 						double valorTributacao = SeguroVida.Seguro(optValor);
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela3();
 						System.out.println("Valor assegurado: R$ " + Arquivos.formatInt(optValor));
 						System.out.println("Será cobrado uma taxa de 20% para realizar essa "
 								+ "operação. \nValor da tributação: R$ " + Arquivos.formatInt(valorTributacao));
@@ -231,19 +283,34 @@ public abstract class Conta implements Comparable<Conta> {
 
 						case 1:
 							logada.saldo -= SeguroVida.Seguro(optValor);
-							System.out.println("Parabéns! Você acaba de adquirir nosso seguro!\n");
-							MenuAtalhos.saidaMenu();
-							Relatorios.relSeguroDeVida(logada.nome, optValor);
+							System.out.println("\n|--------------------------PYRAMID--------------------------|"
+									+ "\n|------------------------SEGURO DE VIDA---------------------|" + "\n "
+									+ logada.tipoUsuario + " " + logada.nome + ", " + logada.numeroDaConta + "-"
+									+ logada.agencia + ", Conta " + logada.tipoConta + "\n Valor Assegurado R$ "
+									+ Arquivos.formatInt(optValor)
+									+ "\n Taxa de Tributação (20% do valor assegurado): R$ " + optValor * 0.2 
+									+ "\n " + Data.Data());
+							System.out.println("|--------------------------PYRAMID--------------------------|");
+							Relatorios.relSeguroDeVida(logada.tipoUsuario, logada.nome, optValor,
+									SeguroVida.Seguro(optValor));
 							Relatorios.nfSeguro(logada.nome, logada.CPFDoTitular, optValor);
+							SistemaPrincipal.limpaTela23();
+							MenuAtalhos.saidaMenu();
 							break;
 						case 2:
-							System.out.println("Te esperamos em uma próxima vez fazer nosso seguro!");
+							SistemaPrincipal.logoMenu();
+							SistemaPrincipal.limpaTela6();
+							System.out.println("Sempre que quiser, estaremos por aqui!");
 							MenuAtalhos.saidaMenu();
 							break;
 						}
 						break;
 					} else {
-						System.out.println("Você não tem saldo suficiente para completar essa solicitação!\n");
+						System.out.println("Saldo indisponível. Verifique seu saldo abaixo:");
+						System.out.println("|--------------------------PYRAMID--------------------------|"
+								+ "\n Saldo da Conta: R$ " + Arquivos.formatInt(logada.saldo) 
+								+ "\n|--------------------------PYRAMID--------------------------|");
+						SistemaPrincipal.limpaTela26();
 					}
 					MenuAtalhos.saidaMenu();
 				} catch (Exception ee) {
@@ -264,16 +331,16 @@ public abstract class Conta implements Comparable<Conta> {
 	// Menu de Relatórios de acordo com tipo de Usuário
 	@SuppressWarnings("unchecked")
 	public static void relatorios(String string, Conta logada, Map<String, Conta> mapTipoConta,
-			Map<Integer, Conta> mapNumeroConta, List<Object> tContas) {
+			Map<Integer, Conta> mapNumeroConta, List<Object> tContas) throws IOException {
 
 		boolean sair = false;
 
-		SistemaPrincipal.logoMenu();
 		do {
+			SistemaPrincipal.logoMenu();
 			if (logada.getTipoUsuario().equals("Cliente")) {
 				if (logada.getTipoConta().equals("Corrente")) {
-					System.out.println("Escolha a opção desejada: \n1- Saldo\n2- Relatorio Tarifa Conta Corrente"
-							+ "\n3- Informações sobre tarifas\n4 - Voltar");
+					System.out.println("\n\n\n\n\nEscolha a opção desejada: \n[1] Saldo da Conta"
+							+ "\n[2] Relatorio Tarifa Conta Corrente\n[3] Informações sobre tarifas\n[4] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -287,12 +354,20 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
 						break;
 					case 2:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.totalTarifas(logada);
 						break;
 					case 3:
+						SistemaPrincipal.logoMenu();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.infoTarifas();
 						break;
 					case 4:
@@ -303,8 +378,8 @@ public abstract class Conta implements Comparable<Conta> {
 						break;
 					}
 				} else if (logada.getTipoConta().equals("Poupanca")) {
-					System.out.println("Escolha a operação desejada: \n1- Saldo da Conta \n2 - Relatório de Rendimentos"
-							+ " da Conta Poupança\n3 - Voltar");
+					System.out.println("\n\n\n\n\n\nEscolha a operação desejada: \n[1] Saldo da Conta"
+							+ "\n[2] Relatório de Rendimentos da Conta Poupança\n[3] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -318,10 +393,15 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
-						MenuAtalhos.relRendimentosPoup(logada);
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela9();
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
 					case 3:
 						sair = true;
@@ -335,9 +415,9 @@ public abstract class Conta implements Comparable<Conta> {
 
 			if (logada.getTipoUsuario().equals("Operador")) {
 				if (logada.getTipoConta().equals("Corrente")) {
-					System.out.println("Escolha a operação desejada: \n1 - Saldo\n2 - Relatório "
-							+ "de Tarifação da Conta Corrente\n3 - Informações sobre tarifas"
-							+ "\n4 - Relatório Individual de Clientes\n5 - Relatorio de Bonificacao\n6 - Voltar");
+					System.out.println("\n\n\nEscolha a operação desejada: \n[1] Saldo da Conta\n[2] Relatório "
+							+ "de Tarifação da Conta Corrente\n[3] Informações sobre tarifas"
+							+ "\n[4] Relatório Individual de Clientes\n[5] Relatorio de Bonificacao\n[6] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -351,15 +431,23 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.totalTarifas(logada);
 						break;
 					case 3:
+						SistemaPrincipal.logoMenu();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.infoTarifas();
 						break;
 					case 4:
+						SistemaPrincipal.logoMenu();
 						while (logada.agencia == 1) {
 							for (Object object : tContas) {
 								Conta temp = (Conta) object;
@@ -380,6 +468,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.tipoConta);
 								}
 							}
+							System.out.println();
 							break;
 						}
 						while (logada.agencia == 3) {
@@ -391,6 +480,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						while (logada.agencia == 4) {
@@ -402,6 +492,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						MenuAtalhos.saidaMenu();
@@ -419,10 +510,10 @@ public abstract class Conta implements Comparable<Conta> {
 						break;
 					}
 				} else if (logada.getTipoConta().equals("Poupanca")) {
-					System.out.println("Escolha a operação desejada: \n1 - Saldo\n2 - Relatório "
-							+ "de Tarifação da Conta Corrente\n3 - Informações sobre tarifas" + "\n4 - Relatório de "
-							+ "Rendimentos da Poupança\n5 - Relatório Individual de Clientes"
-							+ "\n6 - Relatorio de Bonificacao\n7 - Voltar");
+					System.out.println(
+							"\n\n\nEscolha a operação desejada: \n[1] Saldo da Conta\n[2] Informações sobre tarifas"
+									+ "\n[3] Relatório de Rendimentos da Poupança\n[4] Relatório Individual de Clientes"
+									+ "\n[5] Relatorio de Bonificacao\n[6] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -436,18 +527,19 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
-						MenuAtalhos.totalTarifas(logada);
-						break;
-					case 3:
 						MenuAtalhos.infoTarifas();
 						break;
-					case 4:
-						MenuAtalhos.relRendimentosPoup(logada);
+					case 3:
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
-					case 5:
+					case 4:
+						SistemaPrincipal.logoMenu();
 						while (logada.agencia == 1) {
 							for (Object object : tContas) {
 								Conta temp = (Conta) object;
@@ -468,6 +560,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.tipoConta);
 								}
 							}
+							System.out.println();
 							break;
 						}
 						while (logada.agencia == 3) {
@@ -479,6 +572,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						while (logada.agencia == 4) {
@@ -490,16 +584,17 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						MenuAtalhos.saidaMenu();
 						break;
-					case 6:
+					case 5:
 						System.out.printf("\nO salário de Operador de Caixa após a bonificação é de R$"
 								+ OperadorCaixa.salarioOperadorCaixa());
 						MenuAtalhos.saidaMenu();
 						break;
-					case 7:
+					case 6:
 						sair = true;
 						break;
 					default:
@@ -511,11 +606,11 @@ public abstract class Conta implements Comparable<Conta> {
 
 			if (logada.getTipoUsuario().equals("Gerente")) {
 				if (logada.getTipoConta().equals("Corrente")) {
-					System.out.println("Escolha a operação desejada: \n1 - Saldo\n2 - Relatório "
-							+ "de Tarifação da Conta Corrente\n3 - Informações sobre tarifas"
-							+ "\n4 - Relatorio de contas gerenciadas\n5 - Relatório de "
-							+ "Rendimentos da Poupança\n6 - Relatório Individual de Clientes\n"
-							+ "7 - Relatorio de Bonificacao\n8 - Voltar");
+					System.out.println("\nEscolha a operação desejada: \n[1] Saldo da Conta\n[2] Relatório "
+							+ "de Tarifação da Conta Corrente\n[3] Informações sobre tarifas"
+							+ "\n[4] Relatorio de contas gerenciadas\n[5] Relatório de "
+							+ "Rendimentos da Poupança\n[6] Relatório Individual de Clientes\n"
+							+ "[7] Relatorio de Bonificacao\n[8] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -529,12 +624,19 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.totalTarifas(logada);
 						break;
 					case 3:
+						SistemaPrincipal.logoMenu();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.infoTarifas();
 						break;
 					case 4:
@@ -550,9 +652,11 @@ public abstract class Conta implements Comparable<Conta> {
 						MenuAtalhos.saidaMenu();
 						break;
 					case 5:
-						MenuAtalhos.relRendimentosPoup(logada);
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
 					case 6:
+						SistemaPrincipal.logoMenu();
 						while (logada.agencia == 1) {
 							for (Object object : tContas) {
 								Conta temp = (Conta) object;
@@ -573,6 +677,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							System.out.println();
 							break;
 						}
 						while (logada.agencia == 3) {
@@ -584,6 +689,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						while (logada.agencia == 4) {
@@ -595,6 +701,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						MenuAtalhos.saidaMenu();
@@ -614,11 +721,11 @@ public abstract class Conta implements Comparable<Conta> {
 						break;
 					}
 				} else if (logada.getTipoConta().equals("Poupanca")) {
-					System.out.println("Escolha a operação desejada: \n1 - Saldo\n2 - Relatório "
-							+ "de Tarifação da Conta Corrente\n3 - Informações sobre tarifas"
-							+ "\n4 - Relatorio de contas gerenciadas\n5 - Relatório de "
-							+ "Rendimentos da Poupança\n6 - Relatório Individual de Clientes\n"
-							+ "7 - Relatorio de Bonificacao\n8 - Voltar");
+					System.out.println(
+							"\n\nEscolha a operação desejada: \n[1] Saldo da Conta\n[2] Informações sobre tarifas"
+									+ "\n[3] Relatorio de contas gerenciadas\n[4] Relatório de "
+									+ "Rendimentos da Poupança\n[5] Relatório Individual de Clientes\n"
+									+ "[6] Relatorio de Bonificacao\n[7] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -632,15 +739,14 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
-						MenuAtalhos.totalTarifas(logada);
-						break;
-					case 3:
 						MenuAtalhos.infoTarifas();
 						break;
-					case 4:
+					case 3:
 						System.out.println("Numero de contas gerenciados na mesma agencia:");
 						int contador = 0;
 						for (Object object : tContas) {
@@ -652,10 +758,12 @@ public abstract class Conta implements Comparable<Conta> {
 						System.out.println(Arquivos.formatInt(contador));
 						MenuAtalhos.saidaMenu();
 						break;
-					case 5:
-						MenuAtalhos.relRendimentosPoup(logada);
+					case 4:
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
-					case 6:
+					case 5:
+						SistemaPrincipal.logoMenu();
 						while (logada.agencia == 1) {
 							for (Object object : tContas) {
 								Conta temp = (Conta) object;
@@ -676,6 +784,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							System.out.println();
 							break;
 						}
 						while (logada.agencia == 3) {
@@ -687,6 +796,7 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						while (logada.agencia == 4) {
@@ -698,18 +808,19 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
+							SistemaPrincipal.limpaTela3();
 							break;
 						}
 						MenuAtalhos.saidaMenu();
 						break;
-					case 7:
+					case 6:
 						System.out.printf("\nO salário de Operador de Caixa após a bonificação é de R$"
 								+ OperadorCaixa.salarioOperadorCaixa());
 						System.out
 								.printf("\nO salário de Gerente após a bonificação é de R$" + Gerente.salarioGerente());
 						MenuAtalhos.saidaMenu();
 						break;
-					case 8:
+					case 7:
 						sair = true;
 						break;
 					default:
@@ -721,11 +832,10 @@ public abstract class Conta implements Comparable<Conta> {
 
 			if (logada.getTipoUsuario().equals("Diretor")) {
 				if (logada.getTipoConta().equals("Corrente")) {
-					System.out.println("Escolha a operação desejada:"
-							+ "\n1 - Saldo da conta\n2- Relatorio de Tarifação"
-							+ " da Conta Corrente\n3 - Relatório de Bonificação\n4 - Relatório de Rendimentos da Poupança"
-							+ "\n5- Informação sobre tarifas\n6- Informações dos Clientes do Sistema"
-							+ "\n7 - Informações de Gerentes\n8 - Voltar");
+					System.out.println("\nEscolha a operação desejada: \n[1] Saldo da Conta\n[2] Relatorio de Tarifação"
+							+ " da Conta Corrente\n[3] Relatório de Bonificação\n[4] Relatório de Rendimentos da Poupança"
+							+ "\n[5] Informação sobre tarifas\n[6] Informações dos Clientes do Sistema"
+							+ "\n[7] Informações de Gerentes\n[8] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -739,9 +849,14 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.totalTarifas(logada);
 						break;
 					case 3:
@@ -754,9 +869,12 @@ public abstract class Conta implements Comparable<Conta> {
 						MenuAtalhos.saidaMenu();
 						break;
 					case 4:
-						MenuAtalhos.relRendimentosPoup(logada);
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
 					case 5:
+						SistemaPrincipal.logoMenu();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.infoTarifas();
 						break;
 					case 6:
@@ -776,6 +894,7 @@ public abstract class Conta implements Comparable<Conta> {
 						MenuAtalhos.saidaMenu();
 						break;
 					case 7:
+						SistemaPrincipal.logoMenu();
 						while (logada.agencia == 1) {
 							for (Object object : tContas) {
 								Conta temp = (Conta) object;
@@ -798,9 +917,10 @@ public abstract class Conta implements Comparable<Conta> {
 											+ temp.getSaldo() + ", Conta: " + temp.tipoConta);
 								}
 							}
-							MenuAtalhos.saidaMenu();
 							break;
 						}
+						MenuAtalhos.saidaMenu();
+						break;
 					case 8:
 						sair = true;
 						break;
@@ -809,11 +929,10 @@ public abstract class Conta implements Comparable<Conta> {
 						break;
 					}
 				} else if (logada.getTipoConta().equals("Poupanca")) {
-					System.out.println("Escolha a operação desejada:"
-							+ "\n1 - Saldo da conta\n2- Relatorio de Tarifação"
-							+ " da Conta Corrente\n3 - Relatório de Bonificação\n4 - Relatório de Rendimentos da Poupança"
-							+ "\n5- Informação sobre tarifas\n6- Informações dos Clientes do Sistema"
-							+ "\n7 - Informações de Gerentes\n8 - Voltar");
+					System.out.println(
+							"\n\nEscolha a operação desejada: \n[1] Saldo da Conta\n[2] Relatório de Bonificação"
+									+ "\n[3] Relatório de Rendimentos da Poupança\n[4] Informação sobre tarifas"
+									+ "\n[5] Informações dos Clientes do Sistema\n[6] Informações de Gerentes\n[7] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -827,12 +946,11 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
-						MenuAtalhos.totalTarifas(logada);
-						break;
-					case 3:
 						System.out.printf("\nO salário de Operador de Caixa após a bonificação é de R$"
 								+ OperadorCaixa.salarioOperadorCaixa());
 						System.out
@@ -841,13 +959,14 @@ public abstract class Conta implements Comparable<Conta> {
 								.printf("\nO salário do Diretor após a bonificação é de R$" + Diretor.salarioDiretor());
 						MenuAtalhos.saidaMenu();
 						break;
-					case 4:
-						MenuAtalhos.relRendimentosPoup(logada);
+					case 3:
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
-					case 5:
+					case 4:
 						MenuAtalhos.infoTarifas();
 						break;
-					case 6:
+					case 5:
 						System.out.println("Informações dos Clientes do Sistema\n");
 						@SuppressWarnings("rawtypes")
 						List lista = new ArrayList();
@@ -863,7 +982,8 @@ public abstract class Conta implements Comparable<Conta> {
 						}
 						MenuAtalhos.saidaMenu();
 						break;
-					case 7:
+					case 6:
+						SistemaPrincipal.logoMenu();
 						while (logada.agencia == 1) {
 							for (Object object : tContas) {
 								Conta temp = (Conta) object;
@@ -889,7 +1009,7 @@ public abstract class Conta implements Comparable<Conta> {
 							MenuAtalhos.saidaMenu();
 							break;
 						}
-					case 8:
+					case 7:
 						sair = true;
 						break;
 					default:
@@ -902,12 +1022,12 @@ public abstract class Conta implements Comparable<Conta> {
 			if (logada.getTipoUsuario().equals("Presidente")) {
 				double capitalTotal = 0.0;
 				if (logada.getTipoConta().equals("Corrente")) {
-					System.out.println("Escolha a operação desejada: \n1 - Saldo da conta\n"
-							+ "2 - Relatorios de tarifação da Conta Corrente\n3 - Relatório de número de contas do Banco"
-							+ "\n4 - Relatório de Bonificação\n5 - Relatório de Rendimento da Poupança"
-							+ "\n6 - Informações sobre tarifas\n7 - Informações dos Clientes"
-							+ "\n8 - Informações sobre Gerentes e Diretores"
-							+ "\n9- Relatório - Capital Total do Pyramid" + "\n10 - Voltar");
+					System.out.println("Escolha a operação desejada: \n[1] Saldo da Conta\n"
+							+ "[2] Relatorios de tarifação da Conta Corrente\n[3] Relatório de número de contas do Banco"
+							+ "\n[4] Relatório de Bonificação\n[5] Relatório de Rendimento da Poupança"
+							+ "\n[6] Informações sobre tarifas\n[7] Informações dos Clientes"
+							+ "\n[8] Informações sobre Gerentes e Diretores"
+							+ "\n[9] Relatório - Capital Total do Pyramid\n[10] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -921,9 +1041,14 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.totalTarifas(logada);
 						break;
 					case 3:
@@ -950,9 +1075,12 @@ public abstract class Conta implements Comparable<Conta> {
 						MenuAtalhos.saidaMenu();
 						break;
 					case 5:
-						MenuAtalhos.relRendimentosPoup(logada);
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
 					case 6:
+						SistemaPrincipal.logoMenu();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.infoTarifas();
 						break;
 					case 7:
@@ -994,12 +1122,11 @@ public abstract class Conta implements Comparable<Conta> {
 						break;
 					}
 				} else if (logada.getTipoConta().equals("Poupanca")) {
-					System.out.println("Escolha a operação desejada: \n1 - Saldo da conta\n"
-							+ "2 - Relatorios de tarifação da Conta Corrente\n3 - Relatório de número de contas do Banco"
-							+ "\n4 - Relatório de Bonificação\n5 - Relatório de Rendimento da Poupança"
-							+ "\n6 - Informações sobre tarifas\n7 - Informações dos Clientes"
-							+ "\n8 - Informações sobre Gerentes e Diretores"
-							+ "\n9- Relatório - Capital Total do Pyramid" + "\n10 - Voltar");
+					System.out.println("Escolha a operação desejada: \n[1] Saldo da Conta\n[2] Relatório de número "
+							+ "de contas do Banco\n[3] Relatório de Bonificação\n[4] Relatório de Rendimento da Poupança"
+							+ "\n[5] Informações sobre tarifas\n[6] Informações dos Clientes"
+							+ "\n[7] Informações sobre Gerentes e Diretores\n[8] Relatório - Capital Total do Pyramid"
+							+ "\n[9] Voltar");
 					@SuppressWarnings("resource")
 					Scanner sc = new Scanner(System.in);
 					int operacao = 0;
@@ -1013,12 +1140,11 @@ public abstract class Conta implements Comparable<Conta> {
 					switch (operacao) {
 
 					case 1:
+						SistemaPrincipal.logoMenu();
+						SistemaPrincipal.limpaTela4();
+						System.out.println("|--------------------------PYRAMID--------------------------|");
 						MenuAtalhos.saldoConta(logada);
-						break;
 					case 2:
-						MenuAtalhos.totalTarifas(logada);
-						break;
-					case 3:
 						System.out.println("Numero de contas gerenciados na mesma agencia:");
 						int contador = 0;
 						for (Object object : tContas) {
@@ -1030,7 +1156,7 @@ public abstract class Conta implements Comparable<Conta> {
 						System.out.println(Arquivos.formatInt(contador));
 						MenuAtalhos.saidaMenu();
 						break;
-					case 4:
+					case 3:
 						System.out.printf("\nO salário de Operador de Caixa após a bonificação é de R$"
 								+ OperadorCaixa.salarioOperadorCaixa());
 						System.out
@@ -1041,13 +1167,14 @@ public abstract class Conta implements Comparable<Conta> {
 								+ Presidente.salarioPresidente());
 						MenuAtalhos.saidaMenu();
 						break;
-					case 5:
-						MenuAtalhos.relRendimentosPoup(logada);
+					case 4:
+						relRendimentosPoup(logada);
+						MenuAtalhos.saidaMenu();
 						break;
-					case 6:
+					case 5:
 						MenuAtalhos.infoTarifas();
 						break;
-					case 7:
+					case 6:
 						System.out.println("Informações dos Clientes do Sistema");
 						for (Object object : tContas) {
 							Conta temp = (Conta) object;
@@ -1057,7 +1184,7 @@ public abstract class Conta implements Comparable<Conta> {
 						}
 						MenuAtalhos.saidaMenu();
 						break;
-					case 8:
+					case 7:
 						System.out.println("Informações dos Gerentes e Diretores do Banco");
 						for (Object object : tContas) {
 							Conta temp = (Conta) object;
@@ -1069,7 +1196,7 @@ public abstract class Conta implements Comparable<Conta> {
 						}
 						MenuAtalhos.saidaMenu();
 						break;
-					case 9:
+					case 8:
 						System.out.println("Capital Total do Pyramid");
 						for (Object object : tContas) {
 							Conta temp = (Conta) object;
@@ -1078,7 +1205,7 @@ public abstract class Conta implements Comparable<Conta> {
 						System.out.println("R$" + Arquivos.formatInt(capitalTotal) + "\n");
 						MenuAtalhos.saidaMenu();
 						break;
-					case 10:
+					case 9:
 						sair = true;
 						break;
 					default:
@@ -1116,27 +1243,39 @@ public abstract class Conta implements Comparable<Conta> {
 			@SuppressWarnings("resource")
 			Scanner valor = new Scanner(System.in);
 			double tempoRendimento = valor.nextDouble();
-			System.out.println("Simule no prazo desejado: \nDigite 1 para 3 meses"
-					+ "\nDigite 2 para 6 meses\nDigite 3 para 1 Ano");
+			System.out.println("Simule no prazo desejado: \n[1] para 3 meses"
+					+ "\n[2] para 6 meses\n[3] para 1 Ano");
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			int operacao = sc.nextInt();
 			switch (operacao) {
 
 			case 1:
-				System.out.println("Valor utilizado para a cotação: R$" + Arquivos.formatInt(tempoRendimento));
-				System.out.println("O Valor investido mais o rendimento após 3 meses será: R$"
+				SistemaPrincipal.logoMenu();
+				SistemaPrincipal.limpaTela3();
+				System.out.println("|-----------------------------PYRAMID-----------------------------|");
+				System.out.println(" Valor utilizado para a cotação: R$" + Arquivos.formatInt(tempoRendimento));
+				System.out.println(" O Valor investido mais o rendimento após 3 meses será: R$"
 						+ Arquivos.formatInt(tempoRendimento += tempoRendimento * 0.025));
+				System.out.println("|-----------------------------PYRAMID-----------------------------|");
 				break;
 			case 2:
-				System.out.println("Valor utilizado para a cotação: R$" + Arquivos.formatInt(tempoRendimento));
-				System.out.println("O Valor investido mais o rendimento após 6 meses será: R$"
+				SistemaPrincipal.logoMenu();
+				SistemaPrincipal.limpaTela3();
+				System.out.println("|-----------------------------PYRAMID-----------------------------|");
+				System.out.println(" Valor utilizado para a cotação: R$" + Arquivos.formatInt(tempoRendimento));
+				System.out.println(" O Valor investido mais o rendimento após 6 meses será: R$"
 						+ Arquivos.formatInt(tempoRendimento += tempoRendimento * 0.05));
+				System.out.println("|-----------------------------PYRAMID-----------------------------|");
 				break;
 			case 3:
-				System.out.println("Valor utilizado para a cotação: R$" + Arquivos.formatInt(tempoRendimento));
-				System.out.println("O Valor investido mais o rendimento após 1 Ano será: R$"
+				SistemaPrincipal.logoMenu();
+				SistemaPrincipal.limpaTela3();
+				System.out.println("|-----------------------------PYRAMID-----------------------------|");
+				System.out.println(" Valor utilizado para a cotação: R$" + Arquivos.formatInt(tempoRendimento));
+				System.out.println(" O Valor investido mais o rendimento após 1 Ano será: R$"
 						+ Arquivos.formatInt(tempoRendimento += tempoRendimento * 0.1));
+				System.out.println("|-----------------------------PYRAMID-----------------------------|");
 				break;
 			default:
 				System.out.println("Caracter inválido!\n");
